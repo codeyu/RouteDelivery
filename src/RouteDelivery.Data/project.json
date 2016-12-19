@@ -1,14 +1,33 @@
 {
-  "version": "1.0.0-*",
-  "buildOptions": {
-    "debugType": "portable"
+  "version": "1.1",
+  "dependencies": {
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
+    "Microsoft.EntityFrameworkCore": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final",
+    "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "RouteDelivery.Models": "1.1",
+    "NETStandard.Library": "1.6.1",
+    "System.Collections.Immutable": "1.3.0",
+    "System.Linq": "4.3.0",
+    "System.Linq.Parallel": "4.3.0",
+    "System.Linq.Queryable": "4.3.0",
+    "System.Threading.Tasks": "4.3.0",
+    "System.Threading.Tasks.Parallel": "4.3.0"
   },
-  "dependencies": {},
+  "tools": {
+  },
+
   "frameworks": {
-    "netstandard1.6": {
+    "netcoreapp1.1": {
       "dependencies": {
-        "NETStandard.Library": "1.6.1"
-      }
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1"
+        }
+      },
+      "imports": "dnxcore50"
     }
-  }
+  },
+  "version": "1.1"
 }
