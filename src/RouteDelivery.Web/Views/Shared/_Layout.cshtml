@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebApplication</title>
+    <title>@ViewData["Title"] - Route Delivery</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,13 +26,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-controller="Home" asp-action="Index" class="navbar-brand">WebApplication</a>
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">Route Delivery</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-controller="Driver" asp-action="Index">Drivers</a></li>
+                    <li><a asp-controller="Customer" asp-action="Index">Customers</a></li>
+                    <li><a asp-controller="Delivery" asp-action="Index">Deliveries</a></li>
+                    <li><a asp-controller="OptimizationRequest" asp-action="Index">Schedule Optmization</a></li>
+                    <li><a href="/hangfire" target="_blank"><span>Hangfire</span></a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -42,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2016 - WebApplication</p>
+            <p>&copy; 2016 - Route Delivery</p>
         </footer>
     </div>
 

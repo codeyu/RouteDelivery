@@ -1,0 +1,43 @@
+@model IEnumerable<RouteDelivery.Models.OptimizationRequest>
+
+@{
+    ViewBag.Title = "Optimization Request";
+}
+
+<h2>Optimization Request</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ScheduleDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusText)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ScheduleDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusText)
+        </td>
+        <td>
+            @Html.ActionLink("Driver Schedule", "Index", "DriverSchedule", new { Id=item.ID },null) 
+        </td>
+    </tr>
+}
+
+</table>
