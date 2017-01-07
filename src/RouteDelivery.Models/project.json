@@ -1,6 +1,8 @@
 {
   "version": "1.1",
-
+  "buildOptions": {
+      "debugType": "portable"
+    },
   "dependencies": {
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
     "Microsoft.NETCore.App": "1.1.0",

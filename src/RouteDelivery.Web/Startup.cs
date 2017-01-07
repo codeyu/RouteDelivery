@@ -9,9 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RouteDelivery.Data;
+using RouteDelivery.Data.Implementations;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Services;
+using RouteDelivery.OptimizationEngine;
+using Hangfire;
 
 namespace WebApplication
 {
@@ -40,18 +44,25 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            //string sConnectionString = Configuration["Data:Hangfire:ConnectionString"];
+            //services.AddHangfire(x => x.UseSqlServerStorage(sConnectionString));
+            services.AddHangfire(configuration => configuration.UseRedisStorage("127.0.0.1:6379"));
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddDbContext<RouteDeliveryDbContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
+                .AddDefaultTokenProviders(); 
             services.AddMvc();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IOptimizationEngine, OptimizationEngine>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,7 +87,13 @@ namespace WebApplication
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
+            // Map the Dashboard to the root URL
+            //app.UseHangfireDashboard("");
+            // Map to the '/dashboard' URL
+            //app.UseHangfireDashboard("/dashboard");
+            //default, Hangfire maps the dashboard to '/hangfire' URL
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
