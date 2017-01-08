@@ -1,16 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+
 using Hangfire;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using RouteDelivery.Data;
-using RouteDelivery.Data.Implementations;
 using RouteDelivery.Models;
 using RouteDelivery.OptimizationEngine;
 namespace RouteDelivery.Web.Controllers
@@ -20,10 +11,10 @@ namespace RouteDelivery.Web.Controllers
         private IUnitOfWork _uof;
         private IOptimizationEngine _optiEngine;
 
-        public OptimizationRequestController(IUnitOfWork uof, IOptimizationEngine optiEngine)
+        public OptimizationRequestController(IUnitOfWork uof)
         {
             _uof = uof;
-            _optiEngine = optiEngine;
+            _optiEngine = new OptimizationEngine.OptimizationEngine(_uof);
         }
 
         public ActionResult Index()

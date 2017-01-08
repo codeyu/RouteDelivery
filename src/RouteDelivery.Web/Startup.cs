@@ -1,23 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RouteDelivery.Data;
 using RouteDelivery.Data.Implementations;
-using WebApplication.Data;
-using WebApplication.Models;
-using WebApplication.Services;
 using RouteDelivery.OptimizationEngine;
 using Hangfire;
-
-namespace WebApplication
+using Autofac;
+using Autofac.Extensions.DependencyInjection;   
+namespace RouteDelivery.Web
 {
     public class Startup
     {
@@ -38,35 +32,45 @@ namespace WebApplication
             Configuration = builder.Build();
         }
 
+        public IContainer ApplicationContainer { get; private set; }
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             //string sConnectionString = Configuration["Data:Hangfire:ConnectionString"];
             //services.AddHangfire(x => x.UseSqlServerStorage(sConnectionString));
             services.AddHangfire(configuration => configuration.UseRedisStorage("127.0.0.1:6379"));
             
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<RouteDeliveryDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders(); 
+
             services.AddMvc();
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IOptimizationEngine, OptimizationEngine>();
+            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddTransient<IOptimizationEngine, OptimizationEngine.OptimizationEngine>();
+
+            // Create the Autofac container builder.
+            var builder = new ContainerBuilder();
+
+            // Add any Autofac modules or registrations.
+            builder.RegisterModule(new AutofacModule());
+
+            // Populate the services.
+            builder.Populate(services);
+
+            // Build the container.
+            this.ApplicationContainer = builder.Build();
+
+            // Create and return the service provider.
+            return new AutofacServiceProvider(this.ApplicationContainer);
             
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -84,8 +88,6 @@ namespace WebApplication
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
-
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
             // Map the Dashboard to the root URL
             //app.UseHangfireDashboard("");
@@ -100,6 +102,10 @@ namespace WebApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // If you want to dispose of resources that have been resolved in the
+            // application container, register for the "ApplicationStopped" event.
+            appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
         }
     }
 }

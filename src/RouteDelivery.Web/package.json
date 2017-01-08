@@ -1,5 +1,5 @@
 {
-  "name": "webapplication",
+  "name": "routedelivery.web",
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
