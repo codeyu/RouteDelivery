@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.3-*",
+
+  "name": "Hangfire.Private.Redis.StackExchange",
+  "description": "My Hangfire.Redis.StackExchange",
+  "dependencies": {
+    "NETStandard.Library": "1.6.1",
+    "Hangfire.Core": {
+            "version": "1.0.0-*",
+            "target": "project"
+        },
+    "StackExchange.Redis": "1.1.608"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "Newtonsoft.Json": "9.0.1"
+      }
+
+    }
+  }
+}

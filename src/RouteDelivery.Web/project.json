@@ -41,8 +41,18 @@
     },
     "Autofac": "4.2.1",
     "Autofac.Extensions.DependencyInjection": "4.0.0",
-    "Hangfire": "1.6.8",
-    "Hangfire.Redis.StackExchange": "1.6.7.7",
+    "Hangfire.Core": {
+            "version": "1.0.0-*",
+            "target": "project"
+        },
+    "Hangfire.AspNetCore": {
+            "version": "1.0.0-*",
+            "target": "project"
+        },
+    "Hangfire.Private.Redis.StackExchange": {
+            "version": "1.0.3-*",
+            "target": "project"
+        },
     "StackExchange.Redis": "1.1.608",
     "RouteDelivery.Middleware": {
             "version": "1.0.0-*",
@@ -58,10 +68,6 @@
         },
     "RouteDelivery.OptimizationEngine": {
             "version": "1.1.0-*",
-            "target": "project"
-        },
-    "HangFire.Autofac": {
-            "version": "3.0.0-*",
             "target": "project"
         }
   },

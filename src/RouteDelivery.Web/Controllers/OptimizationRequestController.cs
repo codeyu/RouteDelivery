@@ -2,6 +2,7 @@
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using RouteDelivery.Data;
+using RouteDelivery.Data.Implementations;
 using RouteDelivery.Models;
 using RouteDelivery.OptimizationEngine;
 namespace RouteDelivery.Web.Controllers
@@ -11,10 +12,10 @@ namespace RouteDelivery.Web.Controllers
         private IUnitOfWork _uof;
         private IOptimizationEngine _optiEngine;
 
-        public OptimizationRequestController(IUnitOfWork uof, IOptimizationEngine optEngine)
+        public OptimizationRequestController()
         {
-            _uof = uof;
-            _optiEngine = optEngine;
+            _uof = new UnitOfWork();
+            _optiEngine = new OptimizationEngine.OptimizationEngine();
         }
 
         public ActionResult Index()
