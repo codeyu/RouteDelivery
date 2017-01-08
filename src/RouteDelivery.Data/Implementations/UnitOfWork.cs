@@ -13,7 +13,9 @@ namespace RouteDelivery.Data.Implementations
         private IRepository<OptimizationRequest> _optimizationRequest;
         private IRepository<DeliverySchedule> _deliverySchedule;
         private RouteDeliveryDbContext _dbContext;
-
+        public UnitOfWork(){
+            _dbContext = RouteDeliveryDbContextFactory.Create();
+        }
         public UnitOfWork(RouteDeliveryDbContext dbContext)
         {
             _dbContext = dbContext;

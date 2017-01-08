@@ -12,7 +12,7 @@ namespace RouteDelivery.Web
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Register(c => new OptimizationEngine.OptimizationEngine(c.Resolve<IUnitOfWork>()))
                 .As<IOptimizationEngine>()
-                .InstancePerLifetimeScope();
+            .AutoActivate();
         }
     }
 }

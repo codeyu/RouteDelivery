@@ -11,10 +11,10 @@ namespace RouteDelivery.Web.Controllers
         private IUnitOfWork _uof;
         private IOptimizationEngine _optiEngine;
 
-        public OptimizationRequestController(IUnitOfWork uof)
+        public OptimizationRequestController(IUnitOfWork uof, IOptimizationEngine optEngine)
         {
             _uof = uof;
-            _optiEngine = new OptimizationEngine.OptimizationEngine(_uof);
+            _optiEngine = optEngine;
         }
 
         public ActionResult Index()

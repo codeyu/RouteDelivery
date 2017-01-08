@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using RouteDelivery.Data;
+using RouteDelivery.Data.Implementations;
 
 namespace RouteDelivery.OptimizationEngine
 {
@@ -11,7 +12,7 @@ namespace RouteDelivery.OptimizationEngine
     {
         private Random _rnd = new Random();
         private IUnitOfWork _uof;
-
+        public OptimizationEngine(): this(new UnitOfWork()){}
         public OptimizationEngine(IUnitOfWork uof)
         {
             _uof = uof;

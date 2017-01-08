@@ -5,6 +5,7 @@ namespace RouteDelivery.Data
 {
     public class RouteDeliveryDbContext : DbContext
     {
+            
         public RouteDeliveryDbContext(DbContextOptions<RouteDeliveryDbContext> options)
             : base(options) 
         {

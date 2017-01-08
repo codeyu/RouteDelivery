@@ -63,7 +63,8 @@ namespace RouteDelivery.Web
 
             // Build the container.
             this.ApplicationContainer = builder.Build();
-
+            builder.RegisterType<OptimizationEngine.OptimizationEngine>().InstancePerBackgroundJob();
+            GlobalConfiguration.Configuration.UseAutofacActivator(ApplicationContainer);
             // Create and return the service provider.
             return new AutofacServiceProvider(this.ApplicationContainer);
             
